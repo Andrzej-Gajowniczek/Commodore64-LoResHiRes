@@ -1,0 +1,17 @@
+Freestyler
+
+Author :
+Ari Yliaho (Agemixer)
+
+Released :
+2005 HVSC Crew
+
+Technical info:
+Load address:	$0FB0
+Init address:	$1000
+Play address:	$0FB0
+Number of songs:	1
+Default song:	1
+SID model:	6581 & 8580
+Clock speed:	PAL
+Data size:	5220 ($1464)

@@ -11,8 +11,8 @@ import (
 	"os"
 )
 
-var maxDistance float64 = 140
-var imgFile string = "test23a.png"
+var maxDistance float64 = 242
+var imgFile string = "test24x2sizeG.png"
 
 var indexC1 int = 6
 var indexC2 int = 14
@@ -46,7 +46,7 @@ func main() {
 	defer h.Close()
 	frame := renderImgC64(img, goodLumaPalette)
 	h.Write(*frame)
-	/*colorPairsMap :=  showStatistics(*frame)*/
+	/*colorPairsMap :=*/ showStatistics(*frame) //*/
 	//	fmt.Println(colorPairsMap)
 
 }

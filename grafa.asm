@@ -1,7 +1,8 @@
 //KickAssembler: 6502 source code for C64     - grafa.asm
     BasicUpstart2(run)
 
-    *=$1000 "main"
+
+    *=$0810 "main"
     .var ekr = $C000 //color data dest $C000-$C3E8 - Hi nibble=Fg colour; Lo nibble=Bg colour 
     .var graf= $E000 //cursor pattern Hires screen 8KB the last ram blocks on C64 $E000-$FFFF
     run:
@@ -57,5 +58,12 @@ fillo:
     bne !-
     rts
 .align $0100
+* = $1000 "gfx data"
+
 grafa:  
 .import binary "c64.bin"
+.align $100
+* = * "fill data Lo byte src"
+srcLo: .fill 50, $50*i
+* = * "fill data Hi byte src"
+srcHi: .fill 50, grafa>>8+(0.25*i)
