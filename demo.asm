@@ -25,7 +25,7 @@ stx cordX
 ldy#24
 sty cordY
 lda # sc0
-sta bufer
+sta buffer
 jsr renderScreen
 jsr setScreen0
 
@@ -118,7 +118,7 @@ showSreen1RenderScreen0:
     lda chudyCos,y 
     sta verticalShiftScreen0
     lda #sc0
-    sta bufer
+    sta buffer
 jmp doTheJob
 
 showSreen0RenderScreen1:
@@ -149,7 +149,7 @@ showSreen0RenderScreen1:
     lda chudyCos,y 
     sta verticalShiftScreen1
     lda #sc1
-    sta bufer
+    sta buffer
     
 
 doTheJob:
@@ -178,7 +178,7 @@ renderScreen:
     sta destZero
     lda colDst.hi,x 
     clc 
-    adc bufer: #sc0
+    adc buffer: #sc0
     sta destZero+1
     ldy# 0
 !:
