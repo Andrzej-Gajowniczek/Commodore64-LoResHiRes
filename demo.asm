@@ -245,7 +245,7 @@ colDst: .lohifill 25, ekr+(40*i)
 * = * "Sine block"
 grubySin: .fill 256, (160+159.5*sin(toRadians(i*360/256)))>>3
 * = * "Sine shift"
-chudySin: .fill 256, 7-((160+159.5*sin(toRadians(i*360/256)))& 7)
+chudySin: .fill 256, 7-((160+159.5*sin(toRadians(i*360/256)))& 6)
 
 
 
@@ -253,4 +253,4 @@ chudySin: .fill 256, 7-((160+159.5*sin(toRadians(i*360/256)))& 7)
 * = * "Cosine block"
 grubyCos: .fill 256, (100+99.5*cos(toRadians(i*360/256)))>> 3
 * = * "Cosine shift"
-chudyCos: .fill 256, 7-((100+99.5*cos(toRadians(i*360/256))) & 7)
+chudyCos: .fill 256, 7-((100+99.5*cos(toRadians(i*360/256))) & 6)
