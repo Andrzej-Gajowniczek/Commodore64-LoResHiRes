@@ -17,7 +17,7 @@ import (
 
 var maxDistance float64 = 140
 
-var imgFile string = "test29.png"
+var imgFile string = "test11.png"
 
 var indexC1 int = 6
 var indexC2 int = 14
@@ -33,41 +33,28 @@ func (x ByLumaDistance) Less(i, j int) bool {
 //var imgFile string = "test10.png"
 
 func main() {
+	alabama := generateMixedPalette25percent(c64Maya) //new palette called alabama
 
-	var color []c64color
-	color = append(color, c64palette[indexC1])
-	color = append(color, c64palette[indexC2])
-	for _, v := range color {
-		example := PrintExample(v, "  ")
-		fmt.Printf("R:%d G:%d B:%d \t c64 index:%d\tcolor name:|%s|:%s\n", v.r, v.g, v.b, v.id, example, v.name)
-	}
-	fmt.Printf("the Luma distance between |%s| and |%s| is %f\n", PrintExample(color[0], "  "), PrintExample(color[01], "  "), calculateLumaDistance((color[01]), (color[0])))
-	fmt.Printf("the RGB  distance between |%s| and |%s| is %f\n", PrintExample(color[0], "  "), PrintExample(color[01], "  "), calculateRgbError((color[01]), (color[0])))
-	fmt.Println(showShadesOf(color[0], color[1]))
-	//os.Exit(0)
-	/*newOrderPallette := */
-	/*sortedPal :=*/
-	showSortedLumasInPalette(c64palette[0], c64palette)
-	//fmt.Println(sortedPal)
-	//os.Exit(0)
-	alabama := generateMixedPalette25percent(c64Maya)
-	showSortedLumasInPalette(c64palette[1], c64palette)
-	//fmt.Println("")
-	//trashedLumaPalette := generateMixedPalette25percent(sortedPal)
-	//goodLumaPalette := dropBadLuma(trashedLumaPalette)
-	//fmt.Println("palettte size:", len(goodLumaPalette))
-	img := OpenImage(imgFile)
+	img := OpenImage(imgFile) // load image from file
+
+	// that part below shrink picture if its size is bigger than expected
 	if img.Bounds().Dx() > 80 || img.Bounds().Dy() > 50 {
 		img = resize.Resize(80, 50, img, resize.Lanczos3)
 	}
-	//fmt.Println("25%")
 	h, err := os.Create("demo.bin")
 	check4errors("opening new file", err)
 	defer h.Close()
+
+	fmt.Println("\nPicture consist of c64 colour mixed colours based on lest square calculation to the nearest RGB original pixel value")
 	frame := renderImgC64(img, alabama)
+
+	fmt.Println("\nthere is subpalette choosen for every pixel based on best luminance fit and based on that palette a least square method is used to calculate wwhich c64 mixed colour is a best fir to original RGP pixel value")
 	frame = renderImgBeyond(img, alabama)
+
+	fmt.Println("\nthis method achieves best match of c64 mixed palette to the original RGB pixel values by multiplication of these both by luma weight (R*0.299, G*0.587, B*0.114) then the least square method is aplied")
 	frame = renderImgLumaWeight(img, alabama)
 	h.Write(*frame)
+
 	colorPairsMap := showStatistics(*frame)
 	var paletteFromFrame []c64color
 	for k, _ := range colorPairsMap {
@@ -76,15 +63,7 @@ func main() {
 				paletteFromFrame = append(paletteFromFrame, c)
 			}
 		}
-		//fmt.Println(paletteFromFrame)
 	}
-	//	fmt.Println(paletteFromFrame, len(paletteFromFrame))
-	//fmt.Println(colorPairsMap)
-	/*
-		sorted := getBestLumaFitSortedPalette(c64palette[0], paletteFromFrame)
-		for i, v := range sorted {
-			fmt.Printf("index: %02d\t%s\n	", i, PrintExampleRGB(c64palette[v.id>>4], c64palette[v.id&15], "░░"))
-		}*/
 
 }
 
@@ -303,7 +282,7 @@ var c64Maya = []c64color{
 	{0x6F, 0x3D, 0x86, 4, "purple", 0},
 	{0x58, 0x8D, 0x43, 5, "green", 0},
 	{0x35, 0x28, 0x79, 6, "navy", 0},
-	//{0xB8, 0xC7, 0x6F, 7, "yellow", 0},
+	{0xB8, 0xC7, 0x6F, 7, "yellow", 0},
 	{0x6F, 0x4F, 0x25, 8, "orange", 0},
 	{0x43, 0x39, 0x00, 9, "brown", 0},
 	{0x9A, 0x67, 0x59, 10, "pink", 0},
@@ -392,6 +371,8 @@ func showSortedLumasInPalette(a c64color, b []c64color) []c64color {
 }
 
 func generateMixedPalette25percent(pal []c64color) []c64color {
+
+	pal = showSortedLumasInPalette(c64palette[1], pal)
 	var newPalette []c64color
 	for _, bG := range pal {
 		for _, fG := range pal {
